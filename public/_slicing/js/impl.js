@@ -43,6 +43,7 @@ jQuery(document).ready(function($){
 				const obj = JSON.parse(data);
 				if(obj.err == 0){
 					top.location.reload();
+					//window.location = window.location.href++'?eraseCache=true'
 				}else{
 					$('#tt_user_action_adtask_box_content').html(obj.txt);
 				}
@@ -114,6 +115,7 @@ jQuery(document).ready(function($){
 			data: {fromto:fromto},
 			success:     function(data, textStatus, XMLHttpRequest) {
 				$('#tt_keys_res').html(data);
+				$('#tt_keys_res').tooltip({selector: '[data-toggle="tooltip"]'});
 			},
 			error: function(MLHttpRequest, textStatus, errorThrown) {
 				alert(errorThrown);
@@ -154,6 +156,7 @@ jQuery(document).ready(function($){
 				  },
 			success:     function(data, textStatus, XMLHttpRequest) {
 				$('#tt_keys_res').html(data);
+				$('#tt_keys_res').tooltip({selector: '[data-toggle="tooltip"]'});
 			},
 			error: function(MLHttpRequest, textStatus, errorThrown) {
 				alert(errorThrown);
