@@ -1,0 +1,58 @@
+body{
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
+}
+.siteLogo:hover{
+	text-decoration: none;
+	color: #000000;
+}
+.wm_success{
+	background-color: #E3FCEF;
+}
+.tt_cell{
+	cursor: pointer;
+}
+.tt_cell_action_del{
+	cursor: pointer;
+}
+.page-template-home .table td, .page-template-home .table th{
+	padding: .1rem;
+}
+.tt_user_action, .tt_user_action:hover{
+	font-weight: bold;
+}
+.datepicker{
+	z-index: 10000 !important;
+}
+.wm_cbtn{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+	background: transparent;
+}
+.tt_keys{
+	display: inline-block;
+	margin: 10px 15px 0px 5px;
+	font-size: 35px;
+	cursor: pointer;
+	text-decoration: none;
+}
+.tt_keys:hover{
+	text-decoration: none;
+}
+.tt_keys_input{
+	display: inline-block;
+	margin: 10px 10px 0px 0px;
+	font-size: 25px;
+	cursor: pointer;
+}
+#respond label{
+	display: block;
+}
+#myTabContent{
+	padding: 0px 15px 15px 15px;
+	border-left: 1px solid #dee2e6;
+	border-right: 1px solid #dee2e6;
+	border-bottom: 1px solid #dee2e6;
+}
