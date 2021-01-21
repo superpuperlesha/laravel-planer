@@ -30,6 +30,24 @@ jQuery(document).ready(function($){
 		$('#tt_user_action_adtask_box').modal();
 	});
 	
+	
+	//===LIST USERS ajax button===
+	$(document).on('click', '.tt_keys_admusers', function(){
+		$('#tt_keys_res').html(Loading);
+		
+		$.ajax({
+			type: 'POST',
+			url:  WPajaxURL+'.admusers',
+			data: {},
+			success:     function(data, textStatus, XMLHttpRequest) {
+				$('#tt_keys_res').html(data);
+			},
+			error: function(MLHttpRequest, textStatus, errorThrown) {
+				alert(errorThrown);
+			}
+		});
+	});
+	
 	//===add task button===
 	$(document).on('click', '#tt_user_adtask_add', function(){
 		var taskname  = $('#tt_user_adtask_name').val();

@@ -6,7 +6,6 @@ use App\Services\Wmtable;
 
 class WmAJAXController extends Controller{
 	public function ajaxRequestTable(Request $request){
-		//return response()->json(['success'=>'Got Simple Ajax Request.']);
 		return view('ajaxtable');
     }
 	
@@ -24,5 +23,11 @@ class WmAJAXController extends Controller{
 	
 	public function ajaxRequestDellTask(Request $request){
 		return Wmtable::startdeltask();
+    }
+	
+	public function ajaxRequestAdminUsers(Request $request){
+		$users = new Wmtable();
+		$users = $users::getUsers();
+		return view('ajaxusers', ['users'=>$users]);
     }
 }

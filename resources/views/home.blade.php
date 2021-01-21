@@ -15,9 +15,10 @@
 			</div>
 			<div class="col-sm-6 text-right">
 				<input type="text" value="{{ $Wmtable::getMyFromTo() }}" data-range="true" data-multiple-dates-separator="-" class="datepicker-here tt_keys_input tt_keys_input_daterange" readonly="readonly">
-				<a href="#uID" class="fa fa-calendar tt_keys tt_keys_go" aria-hidden="true" title="Set Time period!"></a>
+				<a href="#uID" class="fa fa-calendar tt_keys tt_keys_go"     aria-hidden="true" title="Set Time period!"></a>
 				<a href="#uID" class="fa fa-search-plus tt_keys tt_keys_set" aria-hidden="true" title="Select range!"></a>
-				<a href="#uID" class="fa fa-tasks tt_keys tt_keys_addtask" aria-hidden="true" title="Add task!"></a>
+				<a href="#uID" class="fa fa-tasks tt_keys tt_keys_addtask"   aria-hidden="true" title="Add task!"></a>
+				<a href="#uID" class="fa fa-users tt_keys tt_keys_admusers"  aria-hidden="true" title="Add task!"></a>
 				<a href="{{ url('\logout') }}" class="fa fa-window-close-o tt_keys text-danger" aria-hidden="true" title="Exit!"></a>
 			</div>
 		</div>
