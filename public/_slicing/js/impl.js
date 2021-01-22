@@ -36,53 +36,39 @@ jQuery(document).ready(function($){
         $('#tt_user_action_aduser_box').modal();
     });
 
-	//===LIST USERS ajax button===
-	$(document).on('click', '.tt_keys_admusers', function(){
-		$('#tt_keys_res').html(Loading);
-
-		$.ajax({
-			type: 'POST',
-			url:  WPajaxURL+'.admusers',
-			data: {},
-			success:     function(data, textStatus, XMLHttpRequest) {
-				$('#tt_keys_res').html(data);
+    //===LIST USERS ajax button===
+    $(document).on('click', '.tt_keys_admusers', function () {
+        $('#tt_keys_res').html(Loading);
+        $.ajax({
+            type: 'POST',
+            url: WPajaxURL + '.admusers',
+            data: {},
+            success: function (data, textStatus, XMLHttpRequest) {
+                $('#tt_keys_res').html(data);
                 $('[data-toggle="tooltip"]').tooltip();
-				// var fixHelperModified = function(e, tr) {
-					// var $originals = tr.children();
-					// var $helper = tr.clone();
-					// $helper.children().each(function(index) {
-						// $(this).width($originals.eq(index).width())
-					// });
-					// return $helper;
-				// },
-				// updateIndex = function(e, ui) {
-					// $('td.index', ui.item.parent()).each(function (i) {
-						// $(this).html(i+1);
-					// });
-					// $('input[type=text]', ui.item.parent()).each(function (i) {
-						// $(this).val(i + 1);
-					// });
-				// };
+            },
+            error: function (MLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
 
-				// $('table .wm_sortable').sortable({
-					// helper: fixHelperModified,
-					// stop: updateIndex
-				// }).disableSelection();
-
-				// $('table .wm_sortable').sortable({
-					// distance: 5,
-					// delay: 100,
-					// opacity: 0.6,
-					// cursor: 'move',
-					// update: function() {}
-				// });
-
-			},
-			error: function(MLHttpRequest, textStatus, errorThrown) {
-				alert(errorThrown);
-			}
-		});
-	});
+    //===ADD USERS $$ check-exists button===
+    $(document).on('click', '#tt_admin_aduser_go', function () {
+        $('#tt_keys_res').html(Loading);
+        $.ajax({
+            type: 'POST',
+            url: WPajaxURL + '.admuseradd',
+            data: {},
+            success: function (data, textStatus, XMLHttpRequest) {
+                $('#tt_keys_res').html(data);
+                $('[data-toggle="tooltip"]').tooltip();
+            },
+            error: function (MLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
 
 	//===add task button===
 	$(document).on('click', '#tt_user_adtask_add', function(){

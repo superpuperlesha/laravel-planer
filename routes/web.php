@@ -22,4 +22,4 @@ Route::get('/login', 'Auth\AuthController@login')->name('login');
 Route::post('/login', 'Auth\AuthController@authenticate');
 Route::get('logout', 'Auth\AuthController@logout')->name('logout');
 Route::get('/home', 'Auth\AuthController@home')->name('home');
-
+//admuseradd

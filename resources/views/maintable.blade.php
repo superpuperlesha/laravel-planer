@@ -122,19 +122,16 @@
 </div>
 
 <!-- Modal FOR adding user-->
-<div class="modal fade" id="tt_user_action_aduser_box" tabindex="-1" aria-labelledby="exampleModalLabe3" aria-hidden="true">
+<div class="modal fade-scale" id="tt_user_action_aduser_box" tabindex="-1" aria-labelledby="exampleModalLabe3" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabe3">Adding new task</h5>
+                <h5 class="modal-title" id="exampleModalLabe3">Adding new user</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-
-
-
                 <h6 class="w-100">First name</h6>
                 <input id="tt_admin_aduser_fname" name="tt_admin_aduser_fname" type="text" value="" class="tt_keys_input w-100">
                 <h6 class="w-100">First name</h6>
@@ -142,13 +139,18 @@
                 <h6 class="w-100">E-Mail</h6>
                 <input id="tt_admin_aduser_email" name="tt_admin_aduser_email" type="email" value="" class="tt_keys_input w-100">
                 <h6 class="w-100">Position</h6>
-
+                <select id="tt_admin_aduser_position" name="tt_user_action_taskid" class="tt_keys_input w-100">
+                    <?php $positions = $Wmtable::getPositions() ?>
+                    @foreach ($positions as $position)
+                        <option value="{{ $position->pos_id }}">{{ $position->pos_name }}</option>
+                    @endforeach
+                </select>
                 <br/><br/>
                 <div id="tt_user_action_aduser_box_content"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary"   id="tt_admin_aduser_go">Add task</button>
+                <button type="button" class="btn btn-primary"   id="tt_admin_aduser_go">Add new user</button>
             </div>
         </div>
     </div>
