@@ -27,7 +27,7 @@ class WmAJAXController extends Controller{
 	
 	public function ajaxRequestAdminUsers(Request $request){
 		$users = new Wmtable();
-		$users = $users::getUsers();
+		$users = $users::getUsers('usr_order');
 		return view('ajaxusers', ['users'=>$users]);
     }
 }

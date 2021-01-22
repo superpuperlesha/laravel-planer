@@ -45,6 +45,7 @@ class CreateUsersTable extends Migration{
 			//$table->foreign('usr_role_id')->references('role_id')->on('users_roles')->onDelete('restrict');
 			$table->bigInteger('usr_pos_id')->nullable(true);
 			//$table->foreign('usr_pos_id')->references('pos_id')->on('users_positions')->onDelete('restrict');
+			$table->Integer('usr_order')->default(0);
 			$table->string('usr_email', 64)->default('');
 			$table->string('usr_password',  64)->default('');
 			$table->string('usr_first_name', 64)->default('');

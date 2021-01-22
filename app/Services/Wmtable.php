@@ -87,8 +87,8 @@ class Wmtable{
 		return $res;
 	}
 	
-	public static function getUsers(){
-		return DB::table('users')->get()->where('usr_role_id', 2);
+	public static function getUsers($orderField='usr_first_name'){
+		return DB::table('users')->where('usr_role_id', 2)->orderBy($orderField, 'asc')->get();
     }
 	
 	public static function getTasks(){
