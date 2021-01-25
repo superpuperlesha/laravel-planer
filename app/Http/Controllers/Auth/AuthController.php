@@ -30,12 +30,6 @@ class AuthController extends Controller{
         return redirect('home');
     }
 
-    //public function admuseradd(Request $request){
-
-
-        //return view('ajaxusers');
-    //}
-
     public function login(){
       return view('auth.login');
     }

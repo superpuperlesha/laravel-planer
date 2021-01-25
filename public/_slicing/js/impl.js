@@ -19,6 +19,7 @@ $(document).ready(function(){
 
 var Loading = '<center><h3>Loading...</h3><br/><img src="'+WPThemeURL+'/_slicing/img/loading.gif"></center>';
 
+
 jQuery(document).ready(function($){
 
 	//===set focus for all windows===
@@ -63,10 +64,10 @@ jQuery(document).ready(function($){
         $.ajax({
             type: 'POST',
             url: WPajaxURL + '.admuseradd',
-            data: { tt_admin_aduser_fname:tt_admin_aduser_fname,
-                    tt_admin_aduser_lname:tt_admin_aduser_lname,
-                    tt_admin_aduser_email:tt_admin_aduser_email,
-                    tt_admin_aduser_position:tt_admin_aduser_position,
+            data: { tt_admin_aduser_fname:    tt_admin_aduser_fname,
+                    tt_admin_aduser_lname:    tt_admin_aduser_lname,
+                    tt_admin_aduser_email:    tt_admin_aduser_email,
+                    tt_admin_aduser_position: tt_admin_aduser_position,
                 },
             success: function (data, textStatus, XMLHttpRequest) {
                 $('#tt_keys_res').html(data);
@@ -105,23 +106,52 @@ jQuery(document).ready(function($){
     //===EDIT USER $$ reload users-table===
     $(document).on('click', '.ttadm_editusr', function () {
         var iserID = $(this).attr('data-userid');
-        $('#tt_keys_res').html(Loading);
+        $('#tt_user_action_edituser_box').modal();
+        $('#tt_admin_adituser_mbox').html(Loading);
 
         $.ajax({
             type: 'POST',
-            url: WPajaxURL + '.admuseredit',
-            data: { iserID:iserID,
-            },
+            url: WPajaxURL + '.admusergedit',
+            data: { iserID:iserID },
             success: function (data, textStatus, XMLHttpRequest) {
-                $('#tt_keys_res').html(data);
-                $('[data-toggle="tooltip"]').tooltip();
-                $('#tt_user_action_edituser_box').modal('hide');
+                $('#tt_admin_adituser_mbox').html(data);
             },
             error: function (MLHttpRequest, textStatus, errorThrown) {
                 alert(errorThrown);
             }
         });
     });
+
+
+    //===SAVE EDIT USER FORM===
+    $(document).on('click', '#tt_admin_adituser_go', function(){
+        var user_id     = $('#tt_admin_adituser_id').val();
+        var user_fname  = $('#tt_admin_adituser_fname').val();
+        var user_lname  = $('#tt_admin_adituser_lname').val();
+        var user_email  = $('#tt_admin_adituser_email').val();
+        var user_posid  = $('#tt_admin_adituser_position').val();
+        $('#tt_admin_adituser_mbox').html(Loading);
+
+        $.ajax({
+            type: 'POST',
+            url:  WPajaxURL+'.admusersedit',
+            data: {
+                user_id:    user_id,
+                user_fname: user_fname,
+                user_lname: user_lname,
+                user_email: user_email,
+                user_posid: user_posid,
+            },
+            success:     function(data, textStatus, XMLHttpRequest) {
+                $('#tt_user_action_edituser_box').modal('hide');
+                $('#tt_keys_res').html(data);
+            },
+            error: function(MLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+
 
 	//===add task button===
 	$(document).on('click', '#tt_user_adtask_add', function(){

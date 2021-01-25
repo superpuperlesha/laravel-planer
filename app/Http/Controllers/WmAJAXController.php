@@ -65,4 +65,27 @@ class WmAJAXController extends Controller{
         return view('ajaxusers', ['users'=>$users]);
     }
 
+    public function ajaxRequestAdminUserGetEdit(Request $request){
+        $request->validate([
+            'iserID'=>'required|integer',
+        ]);
+
+        $user = Wmtable::getUserInfo($request->iserID);
+        $positions = Wmtable::getPositions();
+        return view('ajaxusergform', ['user'=>$user, 'positions'=>$positions]);
+    }
+
+    public function ajaxRequestAdminUserSaveEdit(Request $request){
+        $request->validate([
+            'user_id'=>'required|integer',
+        ]);
+
+        $user = Wmtable::setUserInfo($request->user_id, $request->user_fname, $request->user_lname, $request->user_email, $request->user_posid);
+        $users = new Wmtable();
+        $users = $users::getUsers('usr_order');
+        return view('ajaxusers', ['users'=>$users]);
+    }
+
+
+
 }

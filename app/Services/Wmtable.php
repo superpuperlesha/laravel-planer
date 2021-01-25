@@ -204,6 +204,17 @@ class Wmtable{
 	}
 
 
+    static function getUserInfo($user_id){
+        $res = DB::table('users')->where('usr_id', '=', $user_id)->get();
+        return $res[0];
+    }
+
+
+    static function setUserInfo($user_id, $user_fname, $user_lname, $user_email, $user_posid){
+        $res = DB::table('users')->where('usr_id', $user_id)->update(['usr_first_name'=>$user_fname, 'usr_last_name'=>$user_lname, 'usr_email'=>$user_email, 'usr_pos_id'=>$user_posid]);
+    }
+
+
 	static function startaddnewtask(){
 		$res=['err'=>0, 'txt'=>''];
 		$_POST['taskname']  = $_POST['taskname']  ?? '';
@@ -219,7 +230,6 @@ class Wmtable{
 		}
 		echo json_encode($res);
 	}
-
 
 
 	static function startplannedtime(){

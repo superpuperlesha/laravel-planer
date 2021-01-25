@@ -33,6 +33,9 @@ body{
 .datepicker{
 	z-index: 10000 !important;
 }
+.cursor-pointer{
+    cursor: pointer;
+}
 .wm_cbtn{
 	border: 0px;
 	padding: 0px;
