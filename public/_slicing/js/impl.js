@@ -56,13 +56,66 @@ jQuery(document).ready(function($){
     //===ADD USERS $$ check-exists button===
     $(document).on('click', '#tt_admin_aduser_go', function () {
         $('#tt_keys_res').html(Loading);
+        var tt_admin_aduser_fname    = $('#tt_admin_aduser_fname').val();
+        var tt_admin_aduser_lname    = $('#tt_admin_aduser_lname').val();
+        var tt_admin_aduser_email    = $('#tt_admin_aduser_email').val();
+        var tt_admin_aduser_position = $('#tt_admin_aduser_position').val();
         $.ajax({
             type: 'POST',
             url: WPajaxURL + '.admuseradd',
-            data: {},
+            data: { tt_admin_aduser_fname:tt_admin_aduser_fname,
+                    tt_admin_aduser_lname:tt_admin_aduser_lname,
+                    tt_admin_aduser_email:tt_admin_aduser_email,
+                    tt_admin_aduser_position:tt_admin_aduser_position,
+                },
             success: function (data, textStatus, XMLHttpRequest) {
                 $('#tt_keys_res').html(data);
                 $('[data-toggle="tooltip"]').tooltip();
+                $('#tt_user_action_aduser_box').modal('hide');
+            },
+            error: function (MLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+
+    //===DELETE USER $$ reload users-table===
+    $(document).on('click', '.ttadm_delusr', function () {
+        if(window.confirm('Delete user?')){
+            var iserID = $(this).attr('data-userid');
+            $('#tt_keys_res').html(Loading);
+
+            $.ajax({
+                type: 'POST',
+                url: WPajaxURL + '.admuserdel',
+                data: { iserID:iserID,
+                },
+                success: function (data, textStatus, XMLHttpRequest) {
+                    $('#tt_keys_res').html(data);
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                error: function (MLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }
+    });
+
+
+    //===EDIT USER $$ reload users-table===
+    $(document).on('click', '.ttadm_editusr', function () {
+        var iserID = $(this).attr('data-userid');
+        $('#tt_keys_res').html(Loading);
+
+        $.ajax({
+            type: 'POST',
+            url: WPajaxURL + '.admuseredit',
+            data: { iserID:iserID,
+            },
+            success: function (data, textStatus, XMLHttpRequest) {
+                $('#tt_keys_res').html(data);
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#tt_user_action_edituser_box').modal('hide');
             },
             error: function (MLHttpRequest, textStatus, errorThrown) {
                 alert(errorThrown);

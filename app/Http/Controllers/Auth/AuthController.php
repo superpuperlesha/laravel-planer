@@ -23,12 +23,18 @@ class AuthController extends Controller{
         User::create([
 			'usr_first_name' => $request->fname,
 			'usr_last_name'  => $request->lname,
-			'usr_email'      => $request->email,
+			'usr_email'      => $request->usr_email,
 			'usr_password'   => Hash::make($request->password),
         ]);
 
         return redirect('home');
     }
+
+    //public function admuseradd(Request $request){
+
+
+        //return view('ajaxusers');
+    //}
 
     public function login(){
       return view('auth.login');

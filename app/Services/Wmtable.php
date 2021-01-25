@@ -88,7 +88,7 @@ class Wmtable{
 	}
 
 	public static function getUsers($orderField='usr_first_name'){
-		return DB::table('users')->where('usr_role_id', 2)->orderBy($orderField, 'asc')->get();
+		return DB::table('users')->where('usr_role_id', 2)->orderBy($orderField, 'asc')->leftJoin('users_positions', 'users.usr_pos_id', '=', 'users_positions.pos_id')->get();
     }
 
 	public static function getTasks(){
@@ -97,6 +97,11 @@ class Wmtable{
 
     public static function getPositions(){
         return DB::table('users_positions')->orderBy('pos_name')->get();
+    }
+
+    public static function delUser($userID){
+        DB::table('users')->where('usr_id', '=', $userID)->delete();
+        return true;
     }
 
 	public static function createTask(){

@@ -11,17 +11,17 @@
 							<th scope="col" class="text-center {!! $c1 !!} {!! $c2 !!}">{!! date('d.m', $value) !!}</th>
 						@endforeach
 					</tr>
-				
+
 					<?php $users = $Wmtable::getUsers() ?>
 					@forelse ($users as $user)<?php
 						$ttarr  = (array)@unserialize($user->usr_work);
 						$ynPlan = $Wmtable->checkPlanFeatures($ttarr); ?>
-						
+
 						<tr>
 							<td class="text-left bg-secondary text-white">
 								<?php echo($ynPlan ?'<b class="fa fa-check text-success"></b>' :'<b class="fa fa-check text-danger"></b>') ?>
 								<a href="#uID" class="tt_user_action text-decoration-none text-primary" data-userid="{{ $user->usr_id }}" title="Set Time period!">
-									{{ $user->usr_first_name.' '.strtoupper(mb_substr($user->usr_last_name, 0, 1)).'. ('. $user->usr_pos_id.')' }}
+									{{ $user->usr_first_name }}&nbsp;{{ strtoupper(mb_substr($user->usr_last_name, 0, 1)) }}&nbsp;<sub class="text-warning">({{ $user->pos_name }})</sub>
 								</a>
 							</td><?php
 							$sumDH = 0;
@@ -45,7 +45,7 @@
 										$val='';
 									}
 								}
-								
+
 								$c1      = ($wd ?'bg-secondary text-white' :'text-info');
 								$c2      = ($value==strtotime(date('Y-m-d', time())) ?'wm_success text-white' :'');
 								$c3      = ($sumDH > 0 ?'tt_cell' :'');
