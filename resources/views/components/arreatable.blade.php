@@ -24,10 +24,10 @@
 									{{ $user->usr_first_name }}&nbsp;{{ strtoupper(mb_substr($user->usr_last_name, 0, 1)) }}&nbsp;<sub class="text-warning">({{ $user->pos_name }})</sub>
 								</a>
 							</td><?php
-							$sumDH = 0;
 							foreach($Wmtable->periodls as $value){
 								$wd      = $Wmtable->isWeekend(date('N', $value));
 								$tooltip = '';
+                                $sumDH = 0;
 								if(!isset($ttarr[$value])){
 									$val = '';
 								}else{
@@ -48,10 +48,10 @@
 
 								$c1      = ($wd ?'bg-secondary text-white' :'text-info');
 								$c2      = ($value==strtotime(date('Y-m-d', time())) ?'wm_success text-white' :'');
-								$c3      = ($sumDH > 0 ?'tt_cell' :'');
+                                $c3      = ($sumDH>0 ?'tt_cell' :($wd ?'' :'tt_freecell') );
 								$atr     = (!$wd ?'data-cell-user="'.$user->usr_id.'" data-cell-date="'.$value.'"' :'');
 								$ttip    = 'data-toggle="tooltip" data-html="true" data-placement="right" title="'.$tooltip.'"'; ?>
-								<td class="text-center {!! $c1 !!} {!! $c2 !!} {!! $c3 !!}" {!! $atr !!} {!! $ttip !!}>
+								<td data-dd="{{  date('d.m.Y', $value) }}" class="text-center {!! $c1 !!} {!! $c2 !!} {!! $c3 !!}" {!! $atr !!} {!! $ttip !!}>
 									{!! $val !!}
 								</td><?php
 							} ?>

@@ -10,8 +10,17 @@ class WmAJAXController extends Controller{
 		return view('ajaxtable');
     }
 
+    public function ajaxRequestAdminUserOrder(Request $request){
+        Wmtable::userOrder($request->userArr);
+    }
+
 	public function ajaxRequestForm1(Request $request){
 		return Wmtable::startaddnewtask();
+    }
+
+    public function ajaxRequestAdminUserViewLog(Request $request){
+        $logs = Wmtable::getlogs();
+        return view('ajaxlogs', ['logs'=>$logs]);
     }
 
 	public function ajaxRequestSetplan(Request $request){
@@ -22,13 +31,25 @@ class WmAJAXController extends Controller{
 		return Wmtable::startCellInfo();
     }
 
+    public function ajaxRequestAdminUserSaveCellDay(Request $request){
+        $usrID    = $request->usrID ?? 0;
+        $cDate    = $request->cDate ?? time();
+        $tasksArr = $request->tasksArr ?? [];
+        $hoursArr = $request->hoursArr ?? [];
+        $tasksArr = (array)$tasksArr;
+        $hoursArr = (array)$hoursArr;
+
+        Wmtable::saveCellDay($request->usrID, $request->cDate, $request->tasksArr, $request->hoursArr);
+
+        return view('ajaxtable');
+    }
+
 	public function ajaxRequestDellTask(Request $request){
 		return Wmtable::startdeltask();
     }
 
     public function ajaxRequestAdminUsers(Request $request){
-        $users = new Wmtable();
-        $users = $users::getUsers('usr_order');
+        $users = Wmtable::getUsers('usr_order');
         return view('ajaxusers', ['users'=>$users]);
     }
 
@@ -49,8 +70,7 @@ class WmAJAXController extends Controller{
             'usr_role_id'    => 2,
         ]);
 
-        $users = new Wmtable();
-        $users = $users::getUsers('usr_order');
+        $users = Wmtable::getUsers('usr_order');
         return view('ajaxusers', ['users'=>$users]);
     }
 
@@ -60,8 +80,8 @@ class WmAJAXController extends Controller{
         ]);
 
         Wmtable::delUser($request->iserID);
-        $users = new Wmtable();
-        $users = $users::getUsers('usr_order');
+
+        $users = Wmtable::getUsers('usr_order');
         return view('ajaxusers', ['users'=>$users]);
     }
 
@@ -79,13 +99,11 @@ class WmAJAXController extends Controller{
         $request->validate([
             'user_id'=>'required|integer',
         ]);
+        if(!$request->user_email){$request->user_email='';}
+        Wmtable::setUserInfo($request->user_id, $request->user_fname, $request->user_lname, $request->user_email, $request->user_posid);
 
-        $user = Wmtable::setUserInfo($request->user_id, $request->user_fname, $request->user_lname, $request->user_email, $request->user_posid);
-        $users = new Wmtable();
-        $users = $users::getUsers('usr_order');
+        $users = Wmtable::getUsers('usr_order');
         return view('ajaxusers', ['users'=>$users]);
     }
-
-
 
 }

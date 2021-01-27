@@ -5,6 +5,14 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration{
     public function up(){
+        Schema::create('users_log', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('log_id');
+            $table->string('log_title', 64);
+            $table->string('log_content', 1024);
+            $table->timestamps();
+        });
+
 		Schema::create('users_positions', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->bigIncrements('pos_id');
@@ -12,7 +20,7 @@ class CreateUsersTable extends Migration{
 			$table->timestamps();
 			$table->index(['pos_name']);
         });
-		
+
 		Schema::create('users_roles', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->bigIncrements('role_id');
@@ -20,7 +28,7 @@ class CreateUsersTable extends Migration{
 			$table->timestamps();
 			$table->index(['role_name']);
         });
-		
+
 		Schema::create('usr_tasks', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->bigIncrements('task_id');
@@ -28,7 +36,7 @@ class CreateUsersTable extends Migration{
 			$table->timestamps();
 			$table->index(['task_name']);
         });
-		
+
 		Schema::create('option', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->bigIncrements('o_id');
@@ -37,7 +45,7 @@ class CreateUsersTable extends Migration{
 			$table->timestamps();
 			$table->index(['o_name']);
         });
-		
+
 		Schema::create('users', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->bigIncrements('usr_id');
@@ -62,6 +70,7 @@ class CreateUsersTable extends Migration{
 		Schema::dropIfExists('users_roles');
 		Schema::dropIfExists('usr_tasks');
 		Schema::dropIfExists('option');
-		Schema::dropIfExists('users');
+        Schema::dropIfExists('users_log');
+        Schema::dropIfExists('users');
     }
 }

@@ -18,6 +18,9 @@ Route::post('ajaxRequest.admuseradd',   [WmAJAXController::class, 'ajaxRequestAd
 Route::post('ajaxRequest.admuserdel',   [WmAJAXController::class, 'ajaxRequestAdminUserDel']);
 Route::post('ajaxRequest.admusergedit', [WmAJAXController::class, 'ajaxRequestAdminUserGetEdit']);
 Route::post('ajaxRequest.admusersedit', [WmAJAXController::class, 'ajaxRequestAdminUserSaveEdit']);
+Route::post('ajaxRequest.savecellday',  [WmAJAXController::class, 'ajaxRequestAdminUserSaveCellDay']);
+Route::post('ajaxRequest.viewlog',      [WmAJAXController::class, 'ajaxRequestAdminUserViewLog']);
+Route::post('ajaxRequest.userorder',    [WmAJAXController::class, 'ajaxRequestAdminUserOrder']);
 
 Route::get('/register',   'Auth\AuthController@register')->name('register');
 Route::post('/register',  'Auth\AuthController@storeUser');

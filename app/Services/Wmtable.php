@@ -16,6 +16,22 @@ class Wmtable{
 		list($this->from, $this->to, $this->periodls) = $this->getFromTo($this->fromto);
 	}
 
+    public static function userOrder($userArr){
+        $i=0;
+	    foreach($userArr as $userID){
+            $i++;
+            DB::table('users')->where('usr_id', $userID)->update(['usr_order'=>$i]);
+        }
+    }
+
+    public static function getlogs(){
+        return DB::table('users_log')->limit(200)->get();
+    }
+
+    public static function setlogs($title, $content){
+        return DB::table('users_log')->insert([ ['log_title'=>$title, 'log_content'=>$content] ]);
+    }
+
 	public static function startdeltask(){
 		$_POST['userid']  = $_POST['userid']  ?? 0;
 		$_POST['dc_date'] = $_POST['dc_date'] ?? time();
@@ -54,6 +70,35 @@ class Wmtable{
 		}
 	}
 
+    public static function saveCellDay($usrID, $cDate, $tasksArr, $hoursArr){
+	    if(is_array($tasksArr)) {
+            $user = self::getUserInfo($usrID);
+            if (strlen($user->usr_work) > 1) {
+                $ttarr = unserialize($user->usr_work);
+            } else {
+                $ttarr = [];
+            }
+
+            for ($i = 0; $i < count($tasksArr); $i++) {
+                if (isset($ttarr[$cDate][$tasksArr[$i]])) {
+                    $taskList[] = self::getTaskName($tasksArr[$i]) . ' (from: ' . $ttarr[$cDate][$tasksArr[$i]] . 'h to ' . $hoursArr[$i] . 'h)';
+                    if ($hoursArr[$i] == 0) {
+                        unset($ttarr[$cDate][$tasksArr[$i]]);
+                    } else {
+                        $ttarr[$cDate][$tasksArr[$i]] = $hoursArr[$i];
+                    }
+                }
+            }
+            ksort($ttarr);
+            DB::table('users')->where('usr_id', $usrID)->update(['usr_work' => serialize($ttarr)]);
+
+            $taskList = implode('<br/>', $taskList);
+            $t = 'Set plan to day';
+            $c = '<span class="text-warning font-weight-bold">Name: </span>' . $user->usr_first_name . ' ' . $user->usr_last_name . '<br/><span class="text-warning font-weight-bold">Email: </span>' . $user->usr_email . '<br/> <span class="text-warning font-weight-bold">Cell date:</span> ' . date('d.m.Y', $cDate) . ' <br/><span class="text-warning font-weight-bold">Task list:</span><br/> ' . $taskList;
+            //WM_LOG(get_current_user_id(), $usrID, $t, $c);
+        }
+    }
+
 	//===FILTER TABLE - CELL with task list===
 	public static function getCellData($dc_date, $userid){
 		$res='';
@@ -68,7 +113,7 @@ class Wmtable{
 
 		foreach($periodls as $date){
 			//if(!eslf::isWeekend(date('N', $date))){
-				$res.='<table class="table table-hover">
+				$res.='<table class="table table-hover" id="tt_user_cell_taskhours">
 						<tr>
 							<th class="text-center">Task name</th>
 							<th class="text-center">Hours</th>
@@ -77,17 +122,19 @@ class Wmtable{
 				foreach($ttarr[$date] as $taskkey=>$task){
 					$res.='<tr>
 							<td>'.self::getTaskName($taskkey).'</td>
-							<td class="text-center">'.$task.'</td>
+							<td class="text-center"><input type="number" min="0" max="24" step="1" value="'.(int)$task.'" class="tt_user_cell_taskhours_list" data-taskid="'.(int)$taskkey.'"></td>
 							<td class="text-center"><i class="fa fa-times text-danger tt_cell_action_del" data-cell-user="'.$userid.'" data-cell-date="'.$date.'" data-cell-taskid="'.$taskkey.'"></i></td>
 						</tr>';
 				}
-				$res.='</table>';
+				$res .='</table>
+                        <input type="hidden" id="tt_user_cell_taskhours_usrid" value="'.$userid.'">
+			            <input type="hidden" id="tt_user_cell_taskhours_cdate" value="'.$dc_date.'">';
 			//}
 		}
 		return $res;
 	}
 
-	public static function getUsers($orderField='usr_first_name'){
+	public static function getUsers($orderField='usr_order'){
 		return DB::table('users')->where('usr_role_id', 2)->orderBy($orderField, 'asc')->leftJoin('users_positions', 'users.usr_pos_id', '=', 'users_positions.pos_id')->get();
     }
 
@@ -211,7 +258,7 @@ class Wmtable{
 
 
     static function setUserInfo($user_id, $user_fname, $user_lname, $user_email, $user_posid){
-        $res = DB::table('users')->where('usr_id', $user_id)->update(['usr_first_name'=>$user_fname, 'usr_last_name'=>$user_lname, 'usr_email'=>$user_email, 'usr_pos_id'=>$user_posid]);
+        DB::table('users')->where('usr_id', $user_id)->update(['usr_first_name'=>$user_fname, 'usr_last_name'=>$user_lname, 'usr_email'=>$user_email, 'usr_pos_id'=>$user_posid]);
     }
 
 
@@ -235,8 +282,15 @@ class Wmtable{
 	static function startplannedtime(){
 		$_POST['userid'] = (int)$_POST['userid'] ?? 0;
 
-		$users = DB::table('users')->select('usr_id', 'usr_work')->where('usr_id', '=', $_POST['userid'])->get();
+		$users = DB::table('users')->where('usr_id', '=', $_POST['userid'])->get();
 		if(isset($users[0]->usr_id) && $users[0]->usr_id==$_POST['userid']){
+            if(!$_POST['stfromto']){
+                $_POST['stfromto'] = date('d.m.Y').'-'.date('d.m.Y');
+            }
+            if(!substr_count($_POST['stfromto'], '-')){
+                $_POST['stfromto'] .= '-'.$_POST['stfromto'];
+            }
+
 			list($from, $to, $periodls) = self::getFromTo($_POST['stfromto']);
 			if(strlen($users[0]->usr_work)>1){
 				$ttarr = unserialize($users[0]->usr_work);
@@ -257,6 +311,8 @@ class Wmtable{
 
 			ksort($ttarr);
 			DB::table('users')->where('usr_id', $_POST['userid'])->update(['usr_work'=>serialize($ttarr)]);
+
+            self::setlogs('Set plan to: '.$users[0]->usr_first_name.' '.$users[0]->usr_last_name, 'Planned: '.$_POST['stfromto'].'<br/>'.'Task: '.self::getTaskName($_POST['taskid']).'('.$_POST['dayplan'].'h)' );
 			return view('ajaxtable');
 		}else{
 			echo'User not faund! ['.$_POST['userid'].']';

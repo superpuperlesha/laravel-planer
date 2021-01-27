@@ -1,3 +1,17 @@
+
+.wm_sortable.over{
+    border: 3px dotted #00ff00;
+    cursor: grab;
+}
+.wm_sortable.move{
+    border: 3px dotted #ff0000;
+    cursor: grab;
+}
+.wm_sortable .wm_sortable_item{
+    cursor: grab;
+}
+
+
 body{
 	background-size: cover;
 	background-attachment: fixed;
@@ -10,7 +24,7 @@ body{
 .wm_success{
 	background-color: #E3FCEF;
 }
-.tt_cell{
+.tt_cell, .tt_freecell{
 	cursor: pointer;
 }
 .tt_cell_action_del{
