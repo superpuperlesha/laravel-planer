@@ -5,18 +5,10 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration{
     public function up(){
-        Schema::create('users_log', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->bigIncrements('log_id');
-            $table->string('log_title', 64);
-            $table->string('log_content', 1024);
-            $table->timestamps();
-        });
-
 		Schema::create('users_positions', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->bigIncrements('pos_id');
-			$table->string('pos_name', 64);
+			$table->string('pos_name', 64)->default('');
 			$table->timestamps();
 			$table->index(['pos_name']);
         });
@@ -45,7 +37,7 @@ class CreateUsersTable extends Migration{
 			$table->timestamps();
 			$table->index(['o_name']);
         });
-
+		
 		Schema::create('users', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->bigIncrements('usr_id');
@@ -62,6 +54,17 @@ class CreateUsersTable extends Migration{
 			$table->mediumText('usr_work')->default('');
 			$table->timestamps();
 			$table->index(['usr_first_name', 'usr_last_name', 'usr_email']);
+        });
+		
+        Schema::create('users_log', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('log_id');
+            $table->string('log_title', 64)->default('');
+            $table->string('log_content', 1024)->default('');
+			$table->bigInteger('log_usr_src');
+			$table->bigInteger('log_usr_desr');
+            $table->timestamps();
+			//$table->foreign('log_usr_src')->references('usr_id')->on('users');
         });
     }
 

@@ -25,11 +25,17 @@ class Wmtable{
     }
 
     public static function getlogs(){
-        return DB::table('users_log')->limit(200)->get();
+        return DB::table('users_log')
+            ->select('users_log.*', 'u1.usr_first_name as usr_srs_fname', 'u1.usr_last_name as usr_srs_lname', 'u2.usr_first_name as usr_dest_fname', 'u2.usr_last_name as usr_dest_lname')
+            ->leftJoin('users as u1', 'log_usr_src',  '=', 'u1.usr_id')
+            ->leftJoin('users as u2', 'log_usr_desr', '=', 'u2.usr_id')
+            ->limit(200)
+            ->orderByDesc('log_id')
+            ->get();
     }
 
-    public static function setlogs($title, $content){
-        return DB::table('users_log')->insert([ ['log_title'=>$title, 'log_content'=>$content] ]);
+    public static function setlogs($usrSrc, $usrDest, $title, $content){
+        return DB::table('users_log')->insert([ ['log_usr_src'=>$usrSrc, 'log_usr_desr'=>$usrDest, 'log_title'=>$title, 'log_content'=>$content] ]);
     }
 
 	public static function startdeltask(){
@@ -312,7 +318,7 @@ class Wmtable{
 			ksort($ttarr);
 			DB::table('users')->where('usr_id', $_POST['userid'])->update(['usr_work'=>serialize($ttarr)]);
 
-            self::setlogs('Set plan to: '.$users[0]->usr_first_name.' '.$users[0]->usr_last_name, 'Planned: '.$_POST['stfromto'].'<br/>'.'Task: '.self::getTaskName($_POST['taskid']).'('.$_POST['dayplan'].'h)' );
+            self::setlogs(1, $_POST['userid'], 'Set plan to: '.$users[0]->usr_first_name.' '.$users[0]->usr_last_name, '<span class="text-warning font-weight-bold">Planned:</span> '.$_POST['stfromto'].'<br/>'.'<span class="text-warning font-weight-bold">Task:</span> '.self::getTaskName($_POST['taskid']).'('.$_POST['dayplan'].'h)' );
 			return view('ajaxtable');
 		}else{
 			echo'User not faund! ['.$_POST['userid'].']';
